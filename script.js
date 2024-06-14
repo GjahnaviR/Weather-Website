@@ -1,0 +1,36 @@
+const searchBox = document.querySelector(".search input");
+const searchBtn = document.querySelector(".search button");
+const WeatherIcon = document.querySelector(".weather-icon");
+
+async function checkWeather(city){
+    const URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=39150b7b77f8613afcad3bae629e6705&units=metric`;
+    const response = await fetch(URL);
+    var data = await response.json();
+    console.log(data);
+
+    document.querySelector(".temp").innerHTML = Math.round(data.main.temp) +"°C";
+    document.querySelector(".city").innerHTML = data.name;
+    document.querySelector(".humidity").innerHTML = data.main.humidity +"%";
+    document.querySelector(".wind").innerHTML = data.wind.speed +"KM/H";
+
+    if(data.weather[0].main == "Clouds"){
+       WeatherIcon.src = "clouds.png";
+    }
+    else if(data.weather[0].main == "Clear"){
+        WeatherIcon.src = "clear.png";
+    }
+    else if(data.weather[0].main == "Rain"){
+        WeatherIcon.src = "rain.png";
+    }
+    else if(data.weather[0].main == "Drizzle"){
+        WeatherIcon.src = "drizzle.png";
+    }
+    else if(data.weather[0].main == "Mist"){
+        WeatherIcon.src = "mist.png";
+    }
+}
+
+
+searchBtn.addEventListener("click", () =>{
+    checkWeather(searchBox.value);
+});
